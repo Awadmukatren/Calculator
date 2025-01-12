@@ -1,0 +1,94 @@
+/* עיצוב עבור כל הגוף */
+body {
+    font-family: Arial, sans-serif; /* הגדרת גופן ברירת מחדל */
+    direction: rtl; /* הגדרת כיוון כתיבה מימין לשמאל */
+    text-align: center; /* יישור טקסט למרכז */
+    background-color: #f4f4f4; /* צבע רקע לגוף */
+    padding-top: 50px; /* רווח עליון */
+}
+
+/* עיצוב עבור קופסת המחשבון */
+.calculator {
+    width: 330px; /* רוחב המחשבון */
+    margin: 0 auto; /* מרכזת את המחשבון */
+    background-color: #c0c0c029; /* צבע רקע חצי שקוף */
+    padding: 20px; /* רווח פנימי */
+    border-radius: 10px; /* פינות עגולות */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* צללה עדינה */
+}
+
+/* עיצוב תיבת התוצאה */
+.result {
+    width: 90%; /* רוחב התיבה */
+    height: 40px; /* גובה התיבה */
+    font-size: 20px; /* גודל הטקסט */
+    text-align: right; /* יישור הטקסט לימין */
+    padding: 10px; /* רווח פנימי */
+    margin-bottom: 20px; /* רווח תחתון */
+    background-color: #C0C0C0; /* צבע רקע */
+    border: none; /* ללא גבול */
+    border-radius: 5px; /* פינות עגולות */
+}
+
+/* עיצוב כפתורי הפעולות */
+.buttons {
+    display: grid; /* פריסת רשת */
+    grid-template-columns: repeat(4, 1fr); /* 4 עמודות שוות */
+    gap: 10px; /* רווחים בין הכפתורים */
+}
+
+/* עיצוב עבור כפתורים כלליים */
+button {
+    font-size: 20px; /* גודל טקסט */
+    padding: 20px; /* רווח פנימי */
+    background-color: #C0C0C0; /* צבע רקע ברירת מחדל */
+    border: 1px solid #ccc; /* גבול קל */
+    border-radius: 5px; /* פינות עגולות */
+    cursor: pointer; /* הצגת מצביע של לחצן */
+    transition: background-color 0.2s; /* אנימציה לשינוי צבע */
+}
+
+/* אפקט ריחוף עבור כפתורים */
+button:hover {
+    background-color: #ddd; /* צבע רקע בזמן ריחוף */
+}
+
+/* אפקט לחיצה עבור כפתורים */
+button:active {
+    background-color: #bbb; /* צבע רקע בזמן לחיצה */
+}
+
+/* עיצוב אזור ההיסטוריה */
+.history {
+    margin-top: 20px; /* רווח עליון */
+    width: 90%; /* רוחב האזור */
+    height: 100px; /* גובה האזור */
+    overflow-y: auto; /* גלילה אנכית במקרה של תוכן רב */
+    background-color: #f9f9f9; /* צבע רקע */
+    padding: 10px; /* רווח פנימי */
+    border-radius: 5px; /* פינות עגולות */
+    border: 1px solid #ccc; /* גבול דק */
+}
+
+/* עיצוב עבור כל פריט בהיסטוריה */
+.history li {
+    padding: 5px; /* רווח פנימי */
+    font-size: 14px; /* גודל הטקסט */
+    border-bottom: 1px solid #eee; /* קו תחתון דק */
+}
+
+/* ביטול קו תחתון עבור הפריט האחרון בהיסטוריה */
+.history li:last-child {
+    border-bottom: none; /* ללא קו תחתון */
+}
+
+/* עיצוב כפתור מחיקת היסטוריה */
+.clear-history-btn {
+    background-color: #ff5555; /* צבע רקע אדום */
+    color: white; /* צבע טקסט לבן */
+}
+
+/* עיצוב מיוחד לכפתורי הפעולות */
+.simples {
+    background-color: #FFA500; /* צבע כתום */
+}

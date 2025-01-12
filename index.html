@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון מתקדם</title>
+    <link rel="stylesheet" href="cal.css"> <!-- קישור לקובץ עיצוב חיצוני -->
+</head>
+<body>
+
+<div class="calculator"> <!-- קופסה ראשית למחשבון -->
+    <input type="text" class="result" id="result" disabled> <!-- תצוגה לתוצאות -->
+    <div class="buttons"> <!-- קופסה עבור הכפתורים -->
+        <!-- שורה 1: פעולות מתקדמות -->
+        <button onclick="setOperator('/')" class="simples">/</button> <!-- חלוקה -->
+        <button onclick="calculateSquareRoot()" class="simples">√</button> <!-- שורש ריבועי -->
+        <button onclick="storeMemory()" class="simples">M+</button> <!-- שמירת תוצאה בזיכרון -->
+        <button onclick="setOperator('^')" class="simples">^</button> <!-- חזקה -->
+
+        <!-- שורה 2: פעולות בסיסיות -->
+        <button onclick="setOperator('*')" class="simples">*</button> <!-- כפל -->
+        <button onclick="appendNumber(9)">9</button> <!-- הספרה 9 -->
+        <button onclick="appendNumber(8)">8</button> <!-- הספרה 8 -->
+        <button onclick="appendNumber(7)">7</button> <!-- הספרה 7 -->
+
+        <!-- שורה 3 -->
+        <button onclick="setOperator('-')" class="simples">-</button> <!-- חיסור -->
+        <button onclick="appendNumber(6)">6</button> <!-- הספרה 6 -->
+        <button onclick="appendNumber(5)">5</button> <!-- הספרה 5 -->
+        <button onclick="appendNumber(4)">4</button> <!-- הספרה 4 -->
+
+        <!-- שורה 4 -->
+        <button onclick="setOperator('+')" class="simples">+</button> <!-- חיבור -->
+        <button onclick="appendNumber(3)">3</button> <!-- הספרה 3 -->
+        <button onclick="appendNumber(2)">2</button> <!-- הספרה 2 -->
+        <button onclick="appendNumber(1)">1</button> <!-- הספרה 1 -->
+
+        <!-- שורה 5 -->
+        <button onclick="calculateResult()" class="simples">=</button> <!-- חישוב תוצאה -->
+        <button onclick="clearResult()" class="simples">AC</button> <!-- ניקוי התצוגה -->
+        <button onclick="appendNumber(0)">0</button> <!-- הספרה 0 -->
+        <button onclick="deleteLast()" class="simples">←</button> <!-- מחיקת הספרה האחרונה -->
+    </div>
+
+    <!-- היסטוריית חישובים -->
+    <ul class="history" id="history"></ul> <!-- רשימת פעולות היסטוריה -->
+    <button class="clear-history-btn" onclick="clearHistory()">Clear history</button> <!-- מחיקת היסטוריה -->
+</div>
+
+<script>
+    // משתנים גלובליים לניהול מצב המחשבון
+    let currentInput = ""; // ערך קלט נוכחי מהמשתמש
+    let previousInput = ""; // ערך הקלט הקודם
+    let operator = ""; // האופרטור הנבחר
+    let memory = null; // זיכרון לשמירת תוצאה
+
+    // פונקציה להוספת ספרה לקלט הנוכחי
+    function appendNumber(number) {
+        currentInput += number; // הוספת המספר לסטרינג הקיים
+        updateResult(); // עדכון התצוגה
+    }
+
+    // פונקציה להגדרת אופרטור
+    function setOperator(op) {
+        if (currentInput === "" && memory !== null) { // אם אין קלט נוכחי, השתמש בזיכרון
+            currentInput = memory.toString();
+        }
+        if (currentInput === "") return; // אם הקלט ריק, צא
+        if (previousInput !== "") {
+            calculateResult(); // חישוב תוצאה במידה ויש קלט קודם
+        }
+        operator = op; // שמירת האופרטור
+        previousInput = currentInput; // העברת הקלט הנוכחי לערך קודם
+        currentInput = ""; // איפוס הקלט הנוכחי
+    }
+
+    // פונקציה לניקוי כל הנתונים
+    function clearResult() {
+        currentInput = ""; // איפוס הקלט הנוכחי
+        previousInput = ""; // איפוס הקלט הקודם
+        operator = ""; // איפוס האופרטור
+        updateResult(); // עדכון התצוגה
+        document.body.style.backgroundColor = "white"; // איפוס צבע הרקע
+    }
+
+    // פונקציה למחיקת הספרה האחרונה
+    function deleteLast() {
+        if (currentInput !== "") {
+            currentInput = currentInput.slice(0, -1); // מחיקת הספרה האחרונה
+            updateResult(); // עדכון התצוגה
+        }
+    }
+
+    // פונקציה לעדכון התצוגה
+    function updateResult() {
+        document.getElementById("result").value = currentInput; // הצגת הקלט הנוכחי
+    }
+
+    // פונקציה לחישוב התוצאה
+    function calculateResult() {
+        if (currentInput === "" || previousInput === "") return; // אם חסר קלט, צא
+        let result;
+        try {
+            if (operator === "^") { // חישוב חזקה
+                result = Math.pow(parseFloat(previousInput), parseFloat(currentInput));
+            } else {
+                result = eval(`${previousInput} ${operator} ${currentInput}`); // חישוב בעזרת eval
+            }
+
+            // בדיקת טווח התוצאה
+            if (result > 100 || result < -100) {
+                result = "Error: Out of range"; // תוצאה מחוץ לטווח
+                document.body.style.backgroundColor = "red"; // צבע רקע אדום לשגיאה
+            } else {
+                // עדכון צבע הרקע בהתאם לתוצאה
+                if (result > 0) {
+                    document.body.style.backgroundColor = "green";
+                } else if (result < 0) {
+                    document.body.style.backgroundColor = "red";
+                } else {
+                    document.body.style.backgroundColor = "gray";
+                }
+            }
+
+            addHistory(`${previousInput} ${operator} ${currentInput} = ${result}`); // הוספת תוצאה להיסטוריה
+            currentInput = result.toString(); // שמירת התוצאה כקלט נוכחי
+            previousInput = ""; // איפוס הקלט הקודם
+            operator = ""; // איפוס האופרטור
+            updateResult(); // עדכון התצוגה
+        } catch (e) {
+            currentInput = "Error"; // הודעת שגיאה
+            updateResult(); // עדכון התצוגה
+        }
+    }
+
+    // פונקציה לחישוב שורש ריבועי
+    function calculateSquareRoot() {
+        if (currentInput === "") return;
+        let result = Math.sqrt(parseFloat(currentInput)); // חישוב השורש הריבועי
+        addHistory(`√${currentInput} = ${result}`); // הוספת תוצאה להיסטוריה
+        currentInput = result.toString(); // עדכון הקלט
+        updateResult(); // עדכון התצוגה
+    }
+
+    // פונקציה לשמירת תוצאה בזיכרון
+    function storeMemory() {
+        if (currentInput !== "") {
+            memory = parseFloat(currentInput); // שמירת התוצאה בזיכרון
+            addHistory(`Saved result: ${memory}`); // הוספת פעולה להיסטוריה
+        } else if (memory !== null) {
+            currentInput = memory.toString(); // הצגת הזיכרון בתצוגה
+        }
+        updateResult(); // עדכון התצוגה
+    }
+
+    // פונקציה להוספת פעולה להיסטוריה
+    function addHistory(entry) {
+        let historyList = document.getElementById("history");
+        let historyItem = document.createElement("li"); // יצירת פריט חדש
+        historyItem.textContent = entry; // הגדרת הטקסט
+        historyList.appendChild(historyItem); // הוספה להיסטוריה
+    }
+
+    // פונקציה לניקוי היסטוריה
+    function clearHistory() {
+        let historyList = document.getElementById("history");
+        historyList.innerHTML = ""; // מחיקת כל הפריטים
+    }
+</script>
+
+</body>
+</html>
